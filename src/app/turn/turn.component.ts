@@ -48,6 +48,9 @@ export class TurnComponent {
     //fileReader.readAsText(this.valueFile);
   }
   submit() {
+
+    let loading = document.getElementById('loading') as HTMLElement;
+    loading.style.display = 'block';
     this.key.splice(0, this.key.length);
     this.value.splice(0, this.value.length);
     this.lengthArr = 0;
@@ -110,6 +113,7 @@ export class TurnComponent {
 
     this.TotalKey = this.valueFile.match(/.ERROR:/g || []).length;
     this.keyOther = this.TotalKey - (this.key2 + this.key3 + this.arr.length);
+    loading.style.display = 'none';
   }
   parseJwt(token: any) {
     var base64Url = token.split('.')[1];
@@ -192,6 +196,8 @@ export class TurnComponent {
     this.route.navigateByUrl('/token');
   }
   filter_time(timeStart: any, timeEnd: any) {
+    let loading = document.getElementById('loading') as HTMLElement;
+    loading.style.display = 'block';
     try {
       if (
         timeStart.length == 2 &&
@@ -331,12 +337,6 @@ export class TurnComponent {
     } catch (error) {
       alert('Error!');
     }
+    loading.style.display = 'none';
   }
-  // ngOnInit(): void {
-  //   (window).on('load', function() {
-  //     (".loader").fadeOut(1000);
-  //     (".main").fadeIn(1000);
-  //   })
-
-  // }
 }

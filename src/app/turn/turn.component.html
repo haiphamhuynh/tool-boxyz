@@ -1,0 +1,145 @@
+<div class="main">
+  <div style="margin-bottom: 20px">
+    <h1 style="text-align: center">TURN FILTER KEYWORD</h1>
+  </div>
+  <div style="width: 700px; margin: auto">
+    <form style="margin-bottom: 15px">
+      <input
+        type="file"
+        name="file"
+        accept=".log"
+        (change)="inputfile($event)"
+      />
+      <input
+        class="btn btn-primary"
+        type="submit"
+        value="Import file"
+        name="import_csv"
+        (click)="submit()"
+      />
+      <input
+        class="btn btn-danger"
+        style="float: right"
+        type="submit"
+        value="JWT token"
+        name="token"
+        (click)="token()"
+      />
+      <div style="display: flex">
+        <div style="width: 60px; margin-right: 10px">
+          <b>From</b>
+          <input
+            name="time"
+            type="text"
+            [maxLength]="2"
+            [(ngModel)]="timeStart"
+            inputMode="numeric"
+            placeholder="HH"
+            aria-label="Hours"
+            class="form-control"
+            autocomplete="off"
+          />
+        </div>
+        <div style="margin-right: 10px; position: relative; bottom: -28px">
+          <b>-></b>
+        </div>
+        <div style="width: 60px; margin-right: 20px">
+          <b>To</b>
+          <input
+            name="time"
+            type="text"
+            [maxLength]="2"
+            [(ngModel)]="timeEnd"
+            inputMode="numeric"
+            placeholder="HH"
+            aria-label="Hours"
+            class="form-control"
+            autocomplete="off"
+          />
+        </div>
+        <div
+          style="
+            width: 110px;
+            margin-right: 20px;
+            position: relative;
+            bottom: -20px;
+          "
+        >
+          <button
+            class="btn btn-primary"
+            type="button"
+            (click)="filter_time(timeStart, timeEnd)"
+          >
+            filter
+          </button>
+        </div>
+      </div>
+    </form>
+    <div>
+      <table class="table table-warning table-hover">
+        <thead>
+          <tr>
+            <th>Keyword</th>
+            <th class="key">Total keywords found</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Total .ERROR</td>
+            <td class="key">{{ TotalKey }}</td>
+          </tr>
+          <tr>
+            <td>TOKEN_ERROR</td>
+            <td class="key">{{ key1 }}</td>
+          </tr>
+          <tr>
+            <td>file_put_contents</td>
+            <td class="key">{{ key2 }}</td>
+          </tr>
+          <tr>
+            <td>Maximum execution time of</td>
+            <td class="key">{{ key3 }}</td>
+          </tr>
+          <tr>
+            <td>Other</td>
+            <td class="key">{{ keyOther }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div style="width: 700px; margin: auto">
+    <b style="color: red">total keywords: {{ lengthKey }}</b>
+    <b style="color: red; float: right">total all keywords: {{ lengthArr }}</b>
+    <div style="display: flex; margin-bottom: 20px">
+      <table class="table table-warning table-hover">
+        <thead>
+          <tr>
+            <th>Keyword</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of key">
+            <td>{{ item }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <table
+        class="table table-warning table-hover"
+        style="text-align: center; width: 30%"
+      >
+        <thead>
+          <tr>
+            <th>total keyword</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of value">
+            <td>{{ item }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<!-- <div class="loader"></div> -->

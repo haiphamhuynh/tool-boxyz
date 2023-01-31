@@ -1,0 +1,33 @@
+<div style="margin:5% auto; max-width: 1300px; height: 500px ;margin-left: 20px; margin-right: 20px;" class="main">
+  <h1 style="text-align: center;">TOKEN JWT</h1>
+  <div style="margin-bottom: 20px;">
+    <table class="table table-warning table-hover" >
+      <thead>
+        <tr>
+          <th class="key">Token</th>
+          <th class="key">Content</th>
+          <th class="key">Iss</th>
+          <th class="key">Iat</th>
+          <th class="key">Exp</th>
+          <th class="key">nbf</th>
+          <th class="key">jti</th>
+          <th class="key">sub</th>
+          <th class="key">prv</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of arrTurnToken">
+          <td style="max-width: 200px; overflow: auto;">{{ item[1] }}</td>
+          <td>{{ item[2] }}</td>
+          <td style="max-width: 200px; overflow: auto;">{{ item[0].iss }}</td>
+          <td>{{ item[0].iat }}</td>
+          <td>{{ item[0].exp }}</td>
+          <td>{{ item[0].nbf }}</td>
+          <td>{{ item[0].jti }}</td>
+          <td>{{ item[0].sub }}</td>
+          <td  style="max-width: 200px; overflow: auto;">{{ item[0].prv }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

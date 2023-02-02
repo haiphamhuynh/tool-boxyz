@@ -508,3 +508,12 @@ td {
     transform: rotate(360deg);
   }
 }
+
+.time_margin{
+  margin-right: 5px;
+}
+
+.b_position{
+  position: relative;
+  bottom: -11px;
+}

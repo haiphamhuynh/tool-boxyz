@@ -5,7 +5,7 @@ import { TurnComponent } from './turn/turn.component';
 
 const routes: Routes = [
   { path: '', component: TurnComponent},
-  { path: 'turn', component: TurnComponent },
+  { path: 'tool', component: TurnComponent },
   { path: 'token', component: TokenJwtComponent },
 ];
 

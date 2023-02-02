@@ -1,6 +1,6 @@
 <div class="main" id="main">
   <div style="margin-bottom: 20px">
-    <h1 style="text-align: center">TURN FILTER KEYWORD</h1>
+    <h1 style="text-align: center">TOOL FILTER KEYWORD</h1>
   </div>
   <div style="width: 700px; margin: auto">
     <form style="margin-bottom: 15px">
@@ -26,50 +26,114 @@
         (click)="token()"
       />
       <div style="display: flex">
-        <div style="width: 60px; margin-right: 10px">
+        <div>
           <b>From</b>
-          <input
-            name="time"
-            type="text"
-            [maxLength]="2"
-            [(ngModel)]="timeStart"
-            inputMode="numeric"
-            placeholder="HH"
-            aria-label="Hours"
-            class="form-control"
-            autocomplete="off"
-          />
+          <div
+            style="
+              display: flex;
+              width: 190px;
+              height: 50px;
+              margin-right: 10px;
+            "
+          >
+            <input
+              name="time_Start_HH"
+              type="text"
+              [maxLength]="2"
+              [(ngModel)]="time_Start_HH"
+              inputMode="numeric"
+              placeholder="HH"
+              aria-label="Hours"
+              class="form-control time_margin"
+              autocomplete="off"
+            />
+            <b class="b_position time_margin">:</b>
+            <input
+              name="time_Start_MM"
+              type="text"
+              [maxLength]="2"
+              [(ngModel)]="time_Start_MM"
+              inputMode="numeric"
+              placeholder="MM"
+              aria-label="Hours"
+              class="form-control time_margin"
+              autocomplete="off"
+              style="width: 55px"
+            />
+            <b class="b_position time_margin">:</b>
+            <input
+              name="time_Start_SS"
+              type="text"
+              [maxLength]="2"
+              [(ngModel)]="time_Start_SS"
+              inputMode="numeric"
+              placeholder="SS"
+              aria-label="Hours"
+              class="form-control time_margin"
+              autocomplete="off"
+            />
+          </div>
         </div>
-        <div style="margin-right: 10px; position: relative; bottom: -28px">
-          <b>-></b>
+        <div style="margin-right: 10px; position: relative; bottom: -30px">
+          <b style="font-size: 20px">-></b>
         </div>
-        <div style="width: 60px; margin-right: 20px">
+        <div>
           <b>To</b>
-          <input
-            name="time"
-            type="text"
-            [maxLength]="2"
-            [(ngModel)]="timeEnd"
-            inputMode="numeric"
-            placeholder="HH"
-            aria-label="Hours"
-            class="form-control"
-            autocomplete="off"
-          />
+          <div
+            style="
+              display: flex;
+              width: 190px;
+              height: 50px;
+              margin-right: 10px;
+            "
+          >
+            <input
+              name="time_End_HH"
+              type="text"
+              [maxLength]="2"
+              [(ngModel)]="time_End_HH"
+              inputMode="numeric"
+              placeholder="HH"
+              aria-label="Hours"
+              class="form-control time_margin"
+              autocomplete="off"
+            />
+            <b class="b_position time_margin">:</b>
+            <input
+              name="time_End_MM"
+              type="text"
+              [maxLength]="2"
+              [(ngModel)]="time_End_MM"
+              inputMode="numeric"
+              placeholder="MM"
+              aria-label="Hours"
+              class="form-control time_margin"
+              autocomplete="off"
+              style="width: 55px"
+            />
+            <b class="b_position time_margin">:</b>
+            <input
+              name="time_End_SS"
+              type="text"
+              [maxLength]="2"
+              [(ngModel)]="time_End_SS"
+              inputMode="numeric"
+              placeholder="SS"
+              aria-label="Hours"
+              class="form-control time_margin"
+              autocomplete="off"
+            />
+          </div>
         </div>
         <div
           style="
             width: 110px;
-            margin-right: 20px;
+            margin-left: 20px;
             position: relative;
-            bottom: -20px;
+            bottom: -27px;
           "
         >
-          <button
-            class="btn btn-primary"
-            type="button"
-            (click)="filter_time(timeStart, timeEnd)"
-          >
+          <button class="btn btn-primary" type="button" (click)="filter_time()">
             filter
           </button>
         </div>
@@ -99,6 +163,10 @@
           <tr>
             <td>Maximum execution time of</td>
             <td class="key">{{ key3 }}</td>
+          </tr>
+          <tr>
+            <td>User_id</td>
+            <td class="key">{{ TotalUserID }}</td>
           </tr>
           <tr>
             <td>Other</td>
@@ -142,5 +210,4 @@
     </div>
   </div>
 </div>
-<!-- <div class="loader" id="loader"></div> -->
 <div class="loading" id="loading"></div>

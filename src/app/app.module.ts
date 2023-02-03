@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { TurnComponent } from './turn/turn.component';
 import { TokenJwtComponent } from './token-jwt/token-jwt.component';
 import { FormsModule } from '@angular/forms';
+import {ClipboardModule} from '@angular/cdk/clipboard';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,9 @@ import { FormsModule } from '@angular/forms';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    ClipboardModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]

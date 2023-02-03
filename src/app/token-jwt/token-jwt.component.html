@@ -1,7 +1,16 @@
-<div style="margin:5% auto; max-width: 1300px; height: 500px ;margin-left: 20px; margin-right: 20px;" class="main">
-  <h1 style="text-align: center;">TOKEN JWT</h1>
-  <div style="margin-bottom: 20px;">
-    <table class="table table-warning table-hover" >
+<div
+  style="
+    margin: 5% auto;
+    max-width: 1300px;
+    height: 500px;
+    margin-left: 20px;
+    margin-right: 20px;
+  "
+  class="main"
+>
+  <h1 style="text-align: center">TOKEN JWT</h1>
+  <div style="margin-bottom: 20px">
+    <table class="table table-warning table-hover">
       <thead>
         <tr>
           <th class="key">Token</th>
@@ -17,17 +26,20 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of arrTurnToken">
-          <td style="max-width: 200px; overflow: auto;">{{ item[1] }}</td>
+          <td style="max-width: 200px; overflow: auto">{{ item[1] }}</td>
           <td>{{ item[2] }}</td>
-          <td style="max-width: 200px; overflow: auto;">{{ item[0].iss }}</td>
+          <td style="max-width: 200px; overflow: auto">{{ item[0].iss }}</td>
           <td>{{ item[0].iat }}</td>
           <td>{{ item[0].exp }}</td>
           <td>{{ item[0].nbf }}</td>
           <td>{{ item[0].jti }}</td>
           <td>{{ item[0].sub }}</td>
-          <td  style="max-width: 200px; overflow: auto;">{{ item[0].prv }}</td>
+          <td style="max-width: 200px; overflow: auto">{{ item[0].prv }}</td>
         </tr>
       </tbody>
     </table>
   </div>
+</div>
+<div *ngIf="loading">
+  <div class="loading" id="loading"></div>
 </div>

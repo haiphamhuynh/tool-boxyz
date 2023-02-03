@@ -10,30 +10,35 @@ import { TurnService } from '../turn.service';
 })
 export class TurnComponent implements OnInit {
   valueFile: any;
-  tokenFile: any;
+
   newFile: any;
-  totalkey: any;
+
+  // key permanent
+  Total_Key_error: any;
+  keyTokenError: any;
+  keyFile_put_content: any;
+  keyMaximum: any;
+  keyRequestError: any;
+  keyDeadlock: any;
   TotalUserID: any;
-  key1: any;
-  key2: any;
-  key3: any;
   keyOther: any;
-  arr: any = [];
+
+  // function token
+  tokenFile: any;
   arrToken: any = [];
-  map: any;
-  unique: any;
-  pFrom: any;
-  pTo: any;
-  result: any;
-  lengthArr: any;
-  key: any = [];
-  value: any = [];
   arrJWT: any = [];
-  TotalKey: any;
   arrContentToken: any = [];
 
+  // function submit
+  arr: any = [];
+  key: any = [];
+  value: any = [];
+  map: any;
   lengthKey: any;
-  arrRemaining: any = [];
+  lengthArr: any;
+  arrUserID: any = [];
+
+  // filter
   time_Start_HH: any;
   time_Start_MM: any;
   time_Start_SS: any;
@@ -41,7 +46,8 @@ export class TurnComponent implements OnInit {
   time_End_MM: any;
   time_End_SS: any;
 
-  arrUserID: any = [];
+  loading = true;
+  copyInput: any;
 
   constructor(private route: Router, private tk: TurnService) {}
 
@@ -55,7 +61,8 @@ export class TurnComponent implements OnInit {
     //fileReader.readAsText(this.valueFile);
   }
   submit() {
-    // this.setVisible('#loading', true);
+    //this.setVisible('#loading', true);
+    this.loading = true;
     try {
       this.key.splice(0, this.key.length);
       this.value.splice(0, this.value.length);
@@ -63,26 +70,38 @@ export class TurnComponent implements OnInit {
       this.TotalUserID = 0;
       this.arr.splice(0, this.arr.length);
 
-      if (this.valueFile.match(/'title' => 'TOKEN_ERROR'/g || [])) {
-        this.key1 = this.valueFile.match(
-          /'title' => 'TOKEN_ERROR'/g || []
+      if (this.valueFile.match(/'title' => 'TOKEN_ERROR'/g)) {
+        this.keyTokenError = this.valueFile.match(
+          /'title' => 'TOKEN_ERROR'/g
         ).length;
       } else {
-        this.key1 = 0;
+        this.keyTokenError = 0;
       }
-      if (this.valueFile.match(/ERROR: file_put_contents/g || [])) {
-        this.key2 = this.valueFile.match(
-          /ERROR: file_put_contents/g || []
+      if (this.valueFile.match(/ERROR: file_put_contents/g)) {
+        this.keyFile_put_content = this.valueFile.match(
+          /ERROR: file_put_contents/g
         ).length;
       } else {
-        this.key2 = 0;
+        this.keyFile_put_content = 0;
       }
-      if (this.valueFile.match(/ERROR: Maximum execution time of /g || [])) {
-        this.key3 = this.valueFile.match(
-          /ERROR: Maximum execution time of /g || []
+      if (this.valueFile.match(/ERROR: Maximum execution time of /g)) {
+        this.keyMaximum = this.valueFile.match(
+          /ERROR: Maximum execution time of /g
         ).length;
       } else {
-        this.key3 = 0;
+        this.keyMaximum = 0;
+      }
+      if (this.valueFile.match(/'title' => 'REQUEST_ERROR',/g)) {
+        this.keyRequestError = this.valueFile.match(
+          /'title' => 'REQUEST_ERROR',/g
+        ).length;
+      } else {
+        this.keyRequestError = 0;
+      }
+      if (this.valueFile.match(/deadlock/g)) {
+        this.keyDeadlock = this.valueFile.match(/deadlock/g).length;
+      } else {
+        this.keyDeadlock = 0;
       }
 
       this.newFile = this.valueFile;
@@ -110,11 +129,16 @@ export class TurnComponent implements OnInit {
         this.value.push(data[index][1]);
       }
       this.lengthKey = this.key.length;
-      this.lengthArr = this.value.reduce(function (acc: any, value: any) {
-        return acc + value;
-      });
+      if (this.value.length > 0) {
+        this.lengthArr = this.value.reduce(function (acc: any, value: any) {
+          return acc + value;
+        });
+      } else {
+        this.lengthArr = 0;
+      }
 
       this.newFile = this.valueFile;
+      this.arrUserID.splice(0, this.arrUserID.length);
       while (this.newFile.includes("'user_id' => '")) {
         var pFrom =
           this.newFile.indexOf("'user_id' => '") + "'user_id' => '".length;
@@ -124,13 +148,18 @@ export class TurnComponent implements OnInit {
         this.newFile = this.newFile.slice(pTo);
       }
       this.TotalUserID = [...new Set(this.arrUserID)].length;
-      this.TotalKey = this.valueFile.match(/.ERROR:/g || []).length;
-      this.keyOther = this.TotalKey - (this.key2 + this.key3 + this.arr.length);
+      this.Total_Key_error = this.valueFile.match(/.ERROR:/g || []).length;
+      this.keyOther =
+        this.Total_Key_error -
+        (this.keyFile_put_content + this.keyMaximum + this.arr.length);
     } catch (error) {
       alert('Error');
     }
-    // this.setVisible('#loading', false);
+    setTimeout(() => {
+      this.loading = false;
+    }, 3000);
   }
+
   parseJwt(token: any) {
     var base64Url = token.split('.')[1];
     var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -172,44 +201,54 @@ export class TurnComponent implements OnInit {
     return time;
   }
   token() {
-    this.tokenFile = this.valueFile;
-    while (this.tokenFile.includes('TOKEN_ERROR')) {
-      let support =
-        this.tokenFile.indexOf('TOKEN_ERROR') + 'TOKEN_ERROR'.length;
-      let pFrom =
-        this.tokenFile.indexOf("'token' => '", support) + "'token' => '".length;
-      let pTo = this.tokenFile.indexOf("',", pFrom);
-      let result = this.tokenFile.substring(pFrom, pTo);
-      this.arrToken.push(result);
+    try {
+      this.tokenFile = this.valueFile;
+      while (this.tokenFile.includes('TOKEN_ERROR')) {
+        let support =
+          this.tokenFile.indexOf('TOKEN_ERROR') + 'TOKEN_ERROR'.length;
+        let pFrom =
+          this.tokenFile.indexOf("'token' => '", support) +
+          "'token' => '".length;
+        let pTo = this.tokenFile.indexOf("',", pFrom);
+        let result = this.tokenFile.substring(pFrom, pTo);
+        this.arrToken.push(result);
 
-      let cfrom =
-        this.tokenFile.indexOf("'content' => '", support) +
-        "'content' => '".length;
-      let cto = this.tokenFile.indexOf("',", cfrom);
-      let resultContent = this.tokenFile.substring(cfrom, cto);
-      if (result != 'null') {
-        this.arrContentToken.push(resultContent);
+        let cfrom =
+          this.tokenFile.indexOf("'content' => '", support) +
+          "'content' => '".length;
+        let cto = this.tokenFile.indexOf("',", cfrom);
+        let resultContent = this.tokenFile.substring(cfrom, cto);
+        if (result != 'null') {
+          this.arrContentToken.push(resultContent);
+        }
+        this.tokenFile = this.tokenFile.slice(pTo);
       }
-      this.tokenFile = this.tokenFile.slice(pTo);
-    }
 
-    for (let iterator of this.arrToken) {
-      if (iterator != 'null') {
-        this.arrJWT.push([this.parseJwt(iterator), iterator]);
+      for (let iterator of this.arrToken) {
+        if (iterator != 'null') {
+          this.arrJWT.push([this.parseJwt(iterator), iterator]);
+        }
       }
-    }
-    for (let index = 0; index < this.arrJWT.length; index++) {
-      this.arrJWT[index][0].iat = this.timeConverter(this.arrJWT[index][0].iat);
-      this.arrJWT[index][0].exp = this.timeConverter(this.arrJWT[index][0].exp);
-      this.arrJWT[index][0].nbf = this.timeConverter(this.arrJWT[index][0].nbf);
-    }
+      for (let index = 0; index < this.arrJWT.length; index++) {
+        this.arrJWT[index][0].iat = this.timeConverter(
+          this.arrJWT[index][0].iat
+        );
+        this.arrJWT[index][0].exp = this.timeConverter(
+          this.arrJWT[index][0].exp
+        );
+        this.arrJWT[index][0].nbf = this.timeConverter(
+          this.arrJWT[index][0].nbf
+        );
+      }
 
-    for (let index = 0; index < this.arrContentToken.length; index++) {
-      this.arrJWT[index].push(this.arrContentToken[index]);
+      for (let index = 0; index < this.arrContentToken.length; index++) {
+        this.arrJWT[index].push(this.arrContentToken[index]);
+      }
+      this.tk.arrToken = this.arrJWT;
+      this.route.navigateByUrl('/token');
+    } catch (error) {
+      alert(error);
     }
-
-    this.tk.arrToken = this.arrJWT;
-    this.route.navigateByUrl('/token');
   }
   setVisible(selector: string, visible: Boolean) {
     var loading = document.querySelector(selector) as HTMLElement;
@@ -217,6 +256,7 @@ export class TurnComponent implements OnInit {
   }
   filter_time() {
     //console.log(this.time_Start_HH, this.time_Start_MM);
+    this.loading = true;
     var string_time_start = `${this.time_Start_HH}:${this.time_Start_MM}:${this.time_Start_SS}`;
     var string_time_end = `${this.time_End_HH}:${this.time_End_MM}:${this.time_End_SS}`;
     //console.log(string_time_start < string_time_end, string_time_start, string_time_end);
@@ -276,7 +316,6 @@ export class TurnComponent implements OnInit {
             this.newFile = this.newFile.slice(pTo);
           }
         }
-
         if (this.arr.length > 0) {
           this.map = this.arr.reduce(function (prev: any, cur: any) {
             prev[cur] = (prev[cur] || 0) + 1;
@@ -285,9 +324,9 @@ export class TurnComponent implements OnInit {
 
           // get TOKEN_ERROR
           if (this.map.TOKEN_ERROR) {
-            this.key1 = this.map.TOKEN_ERROR;
+            this.keyTokenError = this.map.TOKEN_ERROR;
           } else {
-            this.key1 = 0;
+            this.keyTokenError = 0;
           }
 
           delete this.map.TOKEN_ERROR;
@@ -299,17 +338,22 @@ export class TurnComponent implements OnInit {
             this.key.push(data[index][0]);
             this.value.push(data[index][1]);
           }
+
           this.lengthKey = this.key.length;
-          this.lengthArr = this.value.reduce(function (acc: any, value: any) {
-            return acc + value;
-          });
+          if (this.value.length > 0) {
+            this.lengthArr = this.value.reduce(function (acc: any, value: any) {
+              return acc + value;
+            });
+          } else {
+            this.lengthArr = 0;
+          }
         } else {
           this.lengthKey = 0;
           this.lengthArr = 0;
         }
 
         // get Total Key
-        this.TotalKey = 0;
+        this.Total_Key_error = 0;
         this.newFile = this.valueFile;
         while (this.newFile.includes('.ERROR')) {
           var position1 = this.newFile.indexOf('.ERROR') - 9 - stringKey;
@@ -321,7 +365,7 @@ export class TurnComponent implements OnInit {
             string_time_log >= string_time_start &&
             string_time_log < string_time_end
           ) {
-            this.TotalKey++;
+            this.Total_Key_error++;
             var position2 =
               this.newFile.indexOf('.ERROR', position1) + '.ERROR'.length;
             this.newFile = this.newFile.slice(position2);
@@ -333,7 +377,7 @@ export class TurnComponent implements OnInit {
         }
 
         // get file_put_contents
-        this.key2 = 0;
+        this.keyFile_put_content = 0;
         this.newFile = this.valueFile;
         while (this.newFile.includes('.ERROR: file_put_contents')) {
           var position1 =
@@ -346,7 +390,7 @@ export class TurnComponent implements OnInit {
             string_time_log >= string_time_start &&
             string_time_log < string_time_end
           ) {
-            this.key2++;
+            this.keyFile_put_content++;
             var position2 =
               this.newFile.indexOf('.ERROR: file_put_contents', position1) +
               '.ERROR: file_put_contents'.length;
@@ -360,7 +404,7 @@ export class TurnComponent implements OnInit {
         }
 
         // get Maximum execution time of
-        this.key3 = 0;
+        this.keyMaximum = 0;
         this.newFile = this.valueFile;
         while (this.newFile.includes('.ERROR: Maximum execution time of')) {
           var position1 =
@@ -375,7 +419,7 @@ export class TurnComponent implements OnInit {
             string_time_log >= string_time_start &&
             string_time_log < string_time_end
           ) {
-            this.key3++;
+            this.keyMaximum++;
             var position2 =
               this.newFile.indexOf(
                 '.ERROR: Maximum execution time of',
@@ -397,7 +441,9 @@ export class TurnComponent implements OnInit {
         this.arrUserID.splice(0, this.arrUserID.length);
         while (this.newFile.includes("'user_id' => '")) {
           var pFrom = this.newFile.indexOf('[20') + '[20'.length;
-          var request_time = this.newFile.indexOf("'request_time' => '") + "'request_time' => '".length;
+          var request_time =
+            this.newFile.indexOf("'request_time' => '") +
+            "'request_time' => '".length;
           var request_timeTo = this.newFile.indexOf("',", request_time);
           var pTo = this.newFile.indexOf("',", request_timeTo);
           var result = this.newFile.substring(pFrom, pTo);
@@ -424,15 +470,93 @@ export class TurnComponent implements OnInit {
         }
         this.TotalUserID = [...new Set(this.arrUserID)].length;
 
+        // get REQUEST_ERROR
+        this.newFile = this.valueFile;
+        this.keyRequestError = 0;
+        while (this.newFile.includes("'title' => 'REQUEST_ERROR'")) {
+          var pFrom = this.newFile.indexOf('[20') + '[20'.length;
+          var request_time =
+            this.newFile.indexOf("'request_time' => '") +
+            "'request_time' => '".length;
+          var request_timeTo = this.newFile.indexOf("',", request_time);
+          var pTo = this.newFile.indexOf("',", request_timeTo);
+          var result = this.newFile.substring(pFrom, pTo);
+          var stringH = this.newFile.substring(pFrom + 9, pFrom + 11);
+          var stringM = this.newFile.substring(pFrom + 12, pFrom + 14);
+          var stringS = this.newFile.substring(pFrom + 15, pFrom + 17);
+          var string_time_log = `${stringH}:${stringM}:${stringS}`;
+          if (
+            string_time_log >= string_time_start &&
+            string_time_log < string_time_end
+          ) {
+            if (result.includes("'title' => 'REQUEST_ERROR'")) {
+              this.keyRequestError++;
+            }
+            this.newFile = this.newFile.slice(pTo);
+          } else {
+            this.newFile = this.newFile.slice(pTo);
+          }
+        }
+
+        // get deadlock
+        this.newFile = this.valueFile;
+        this.keyDeadlock = 0;
+        while (this.newFile.includes('deadlock')) {
+          var pFrom = this.newFile.indexOf('[20') + '[20'.length;
+          var request_time =
+            this.newFile.indexOf("'request_time' => '") +
+            "'request_time' => '".length;
+          var request_timeTo = this.newFile.indexOf("',", request_time);
+          var pTo = this.newFile.indexOf("',", request_timeTo);
+          var result = this.newFile.substring(pFrom, pTo);
+          var stringH = this.newFile.substring(pFrom + 9, pFrom + 11);
+          var stringM = this.newFile.substring(pFrom + 12, pFrom + 14);
+          var stringS = this.newFile.substring(pFrom + 15, pFrom + 17);
+          var string_time_log = `${stringH}:${stringM}:${stringS}`;
+          if (
+            string_time_log >= string_time_start &&
+            string_time_log < string_time_end
+          ) {
+            if (result.includes('deadlock')) {
+              this.keyDeadlock++;
+            }
+            this.newFile = this.newFile.slice(pTo);
+          } else {
+            this.newFile = this.newFile.slice(pTo);
+          }
+        }
+
         // get keyOther
         this.keyOther =
-          this.TotalKey - (this.key2 + this.key3 + this.arr.length);
+          this.Total_Key_error -
+          (this.keyFile_put_content + this.keyMaximum + this.arr.length);
       } else {
         alert('HH-MM-SS data must be 2 digits and correct in the format');
       }
     } catch (error) {
-      alert('Error!');
+      alert(error);
     }
+    setTimeout(() => {
+      this.loading = false;
+    }, 3000);
   }
-  ngOnInit() {}
+  ngOnInit() {
+    setInterval(() => {
+      this.loading = false;
+    }, 1000);
+  }
+  copy() {
+    // this.copyInput = [
+    //   this.Total_Key_error,
+    //   this.keyRequestError,
+    //   this.keyTokenError,
+    //   this.keyFile_put_content,
+    //   this.keyDeadlock,
+    //   this.keyMaximum,
+    //   this.TotalUserID,
+    //   this.keyOther,
+    // ];
+    this.copyInput = `${this.Total_Key_error }  ${ this.keyRequestError }  ${ this.keyTokenError }  ${ this.keyFile_put_content } ${ this.keyDeadlock }  ${ this.keyMaximum } ${ this.TotalUserID } ${ this.keyOther }`;
+    // this.copyInput = `${this.Total_Key_error } ${this.keyRequestError}`;
+  }
 }

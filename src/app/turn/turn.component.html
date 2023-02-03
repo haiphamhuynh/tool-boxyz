@@ -2,7 +2,7 @@
   <div style="margin-bottom: 20px">
     <h1 style="text-align: center">TOOL FILTER KEYWORD</h1>
   </div>
-  <div style="width: 700px; margin: auto">
+  <div style="width: 1200px; margin: auto">
     <form style="margin-bottom: 15px">
       <input
         type="file"
@@ -140,37 +140,33 @@
       </div>
     </form>
     <div>
-      <table class="table table-warning table-hover">
+      <table class="table table-warning">
         <thead>
           <tr>
-            <th>Keyword</th>
-            <th class="key">Total keywords found</th>
+            <th class="key">Keyword</th>
+            <td class="key">Total .ERROR</td>
+            <td class="key">REQUEST_ERROR</td>
+            <td class="key">TOKEN_ERROR</td>
+            <td class="key">file_put_contents</td>
+            <td class="key">deadlock</td>
+            <td class="key">Maximum execution time</td>
+            <td class="key">User_id</td>
+            <td class="key">Other</td>
+            <td class="key">button</td>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Total .ERROR</td>
-            <td class="key">{{ TotalKey }}</td>
-          </tr>
-          <tr>
-            <td>TOKEN_ERROR</td>
-            <td class="key">{{ key1 }}</td>
-          </tr>
-          <tr>
-            <td>file_put_contents</td>
-            <td class="key">{{ key2 }}</td>
-          </tr>
-          <tr>
-            <td>Maximum execution time of</td>
-            <td class="key">{{ key3 }}</td>
-          </tr>
-          <tr>
-            <td>User_id</td>
+            <th class="key">Total</th>
+            <td class="key">{{ Total_Key_error }}</td>
+            <td class="key">{{ keyRequestError }}</td>
+            <td class="key">{{ keyTokenError }}</td>
+            <td class="key">{{ keyFile_put_content }}</td>
+            <td class="key">{{ keyDeadlock }}</td>
+            <td class="key">{{ keyMaximum }}</td>
             <td class="key">{{ TotalUserID }}</td>
-          </tr>
-          <tr>
-            <td>Other</td>
             <td class="key">{{ keyOther }}</td>
+            <td class="key"><button [cdkCopyToClipboard]="copyInput" (click)="copy()" class="btn btn-warning">Copy</button></td>
           </tr>
         </tbody>
       </table>
@@ -210,4 +206,6 @@
     </div>
   </div>
 </div>
-<div class="loading" id="loading"></div>
+<div *ngIf="loading">
+  <div class="loading" id="loading"></div>
+</div>

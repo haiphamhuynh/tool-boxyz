@@ -9,9 +9,13 @@ import { TurnComponent } from '../turn/turn.component';
 })
 export class TokenJwtComponent {
   arrTurnToken : any = [];
+  loading = true;
   constructor(private tk : TurnService){};
   ngOnInit(): void {
     this.arrTurnToken = this.tk.arrToken;
+    setTimeout(() => {
+      this.loading = false;
+    }, 2000);
   }
 
 

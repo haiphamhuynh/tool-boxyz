@@ -525,11 +525,12 @@ td {
   }
 }
 
-.time_margin{
+.time_margin {
   margin-right: 5px;
 }
 
-.b_position{
+.b_position {
   position: relative;
   bottom: -11px;
 }
+

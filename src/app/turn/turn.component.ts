@@ -546,17 +546,14 @@ export class TurnComponent implements OnInit {
     }, 1000);
   }
   copy() {
-    // this.copyInput = [
-    //   this.Total_Key_error,
-    //   this.keyRequestError,
-    //   this.keyTokenError,
-    //   this.keyFile_put_content,
-    //   this.keyDeadlock,
-    //   this.keyMaximum,
-    //   this.TotalUserID,
-    //   this.keyOther,
-    // ];
-    this.copyInput = `${this.Total_Key_error }  ${ this.keyRequestError }  ${ this.keyTokenError }  ${ this.keyFile_put_content } ${ this.keyDeadlock }  ${ this.keyMaximum } ${ this.TotalUserID } ${ this.keyOther }`;
-    // this.copyInput = `${this.Total_Key_error } ${this.keyRequestError}`;
+    this.copyInput = `${this.Total_Key_error} ${this.keyRequestError} ${this.keyTokenError} ${this.keyFile_put_content} ${this.keyDeadlock} ${this.keyMaximum} ${this.TotalUserID} ${this.keyOther}`;
+  }
+  copyTable(el: any, e: any) {
+    e.preventDefault();
+    var table = document.getElementById(el);
+    if (navigator.clipboard) {
+      var text = table!.innerText.trim();
+      navigator.clipboard.writeText(text).catch(function () {});
+    }
   }
 }

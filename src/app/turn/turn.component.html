@@ -152,6 +152,7 @@
             <td class="key">Maximum execution time</td>
             <td class="key">User_id</td>
             <td class="key">Other</td>
+            <td class="key">Data</td>
             <td class="key">button</td>
           </tr>
         </thead>
@@ -166,7 +167,29 @@
             <td class="key">{{ keyMaximum }}</td>
             <td class="key">{{ TotalUserID }}</td>
             <td class="key">{{ keyOther }}</td>
-            <td class="key"><button [cdkCopyToClipboard]="copyInput" (click)="copy()" class="btn btn-warning">Copy</button></td>
+            <td>
+              <div id="stats">
+                <td class="key">{{ Total_Key_error }}</td>
+                <td class="key">{{ keyRequestError }}</td>
+                <td class="key">{{ keyTokenError }}</td>
+                <td class="key">{{ keyFile_put_content }}</td>
+                <td class="key">{{ keyDeadlock }}</td>
+                <td class="key">{{ keyMaximum }}</td>
+                <td class="key">{{ TotalUserID }}</td>
+                <td class="key">{{ keyOther }}</td>
+              </div>
+            </td>
+            <td class="key">
+              <!-- <button (click)="copy()" [cdkCopyToClipboard]="copyInput" class="btn btn-warning">
+                Copy
+              </button> -->
+              <button
+                class="btn btn-warning"
+                (click)="copyTable('stats', $event)"
+              >
+                Copy
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>

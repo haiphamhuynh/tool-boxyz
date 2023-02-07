@@ -153,7 +153,7 @@
             <td class="key">User_id</td>
             <td class="key">Other</td>
             <td class="key">Data</td>
-            <td class="key">button</td>
+            <td class="key">Button</td>
           </tr>
         </thead>
         <tbody>
@@ -167,7 +167,7 @@
             <td class="key">{{ keyMaximum }}</td>
             <td class="key">{{ TotalUserID }}</td>
             <td class="key">{{ keyOther }}</td>
-            <td>
+            <td class="key">
               <div id="stats">
                 <td class="key">{{ Total_Key_error }}</td>
                 <td class="key">{{ keyRequestError }}</td>
@@ -180,9 +180,6 @@
               </div>
             </td>
             <td class="key">
-              <!-- <button (click)="copy()" [cdkCopyToClipboard]="copyInput" class="btn btn-warning">
-                Copy
-              </button> -->
               <button
                 class="btn btn-warning"
                 (click)="copyTable('stats', $event)"

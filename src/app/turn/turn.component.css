@@ -2,6 +2,7 @@
   box-sizing: border-box;
 }
 .key {
+  vertical-align: middle;
   text-align: center;
 }
 .mr-top {

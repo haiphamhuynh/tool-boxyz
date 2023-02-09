@@ -120,6 +120,7 @@ export class TurnComponent implements OnInit {
         return prev;
       }, {});
 
+
       delete this.map.TOKEN_ERROR;
       delete this.map.MAX_EXECUTION_TIME_ERROR;
       delete this.map.ERROR_EXCEPTION;
@@ -128,6 +129,7 @@ export class TurnComponent implements OnInit {
       data.sort(function(a : any, b : any) {
         return b[1] - a[1];
       });
+
 
       for (let index = 0; index < data.length; index++) {
         this.key.push(data[index][0]);

@@ -3,12 +3,13 @@
     <h1 style="text-align: center">TOOL CHECK LOG</h1>
   </div>
   <div style="width: 1200px; margin: auto">
-    <form style="margin-bottom: 15px">
+    <form style="margin-bottom: 15px;">
       <input
         type="file"
         name="file"
         accept=".log"
         (change)="inputfile($event)"
+        class="form-control-no-display"
       />
       <input
         class="btn btn-primary"
@@ -192,8 +193,8 @@
     </div>
   </div>
   <div style="width: 700px; margin: auto">
-    <b style="color: red">total keywords: {{ lengthKey }}</b>
-    <b style="color: red; float: right">total all keywords: {{ lengthArr }}</b>
+    <b style="color: red">Total keywords: {{ lengthKey }}</b>
+    <b style="color: red; float: right">Total all keywords: {{ lengthArr }}</b>
     <div style="display: flex; margin-bottom: 20px">
       <table class="table table-warning table-hover">
         <thead>
@@ -213,7 +214,7 @@
       >
         <thead>
           <tr>
-            <th colspan="2">total keyword</th>
+            <th colspan="2">Total keyword</th>
           </tr>
         </thead>
         <tbody>

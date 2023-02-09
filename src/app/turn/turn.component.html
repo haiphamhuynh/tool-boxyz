@@ -218,11 +218,11 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of value">
-            <td class="key-vt-md" id="item">{{ item }}</td>
+            <td class="key-vt-md">{{ item }}</td>
             <td class="key">
               <button
                 class="btn btn-warning"
-                (click)="copyTable('item', $event)"
+                [cdkCopyToClipboard]="item"
               >
                 Copy
               </button>

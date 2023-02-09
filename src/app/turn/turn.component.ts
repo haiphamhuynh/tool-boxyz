@@ -119,11 +119,16 @@ export class TurnComponent implements OnInit {
         prev[cur] = (prev[cur] || 0) + 1;
         return prev;
       }, {});
+
       delete this.map.TOKEN_ERROR;
       delete this.map.MAX_EXECUTION_TIME_ERROR;
       delete this.map.ERROR_EXCEPTION;
 
       const data = Object.entries(this.map);
+      data.sort(function(a : any, b : any) {
+        return b[1] - a[1];
+      });
+
       for (let index = 0; index < data.length; index++) {
         this.key.push(data[index][0]);
         this.value.push(data[index][1]);
@@ -153,7 +158,7 @@ export class TurnComponent implements OnInit {
         this.Total_Key_error -
         (this.keyFile_put_content + this.keyMaximum + this.arr.length);
     } catch (error) {
-      alert('Error');
+      alert(`Error: ${error}`);
     }
     setTimeout(() => {
       this.loading = false;
@@ -255,11 +260,9 @@ export class TurnComponent implements OnInit {
     loading.style.display = visible ? 'block' : 'none';
   }
   filter_time() {
-    //console.log(this.time_Start_HH, this.time_Start_MM);
     this.loading = true;
     var string_time_start = `${this.time_Start_HH}:${this.time_Start_MM}:${this.time_Start_SS}`;
     var string_time_end = `${this.time_End_HH}:${this.time_End_MM}:${this.time_End_SS}`;
-    //console.log(string_time_start < string_time_end, string_time_start, string_time_end);
     try {
       if (
         string_time_start < string_time_end &&
@@ -284,6 +287,7 @@ export class TurnComponent implements OnInit {
         var first_dot_position = this.newFile.indexOf('.');
         var stringKey = this.newFile.substring(21, first_dot_position).length;
 
+        // error user
         while (this.newFile.includes('.ERROR: array')) {
           var position1 =
             this.newFile.indexOf('.ERROR: array (') - 9 - stringKey;
@@ -291,7 +295,6 @@ export class TurnComponent implements OnInit {
           var stringM = this.newFile.substring(position1 + 3, position1 + 5);
           var stringS = this.newFile.substring(position1 + 6, position1 + 8);
           var string_time_log = `${stringH}:${stringM}:${stringS}`;
-          // console.log(string_time_log, string_time_log >= string_time_start, string_time_log < string_time_end);
 
           if (
             string_time_log >= string_time_start &&
@@ -334,6 +337,9 @@ export class TurnComponent implements OnInit {
           delete this.map.ERROR_EXCEPTION;
 
           const data = Object.entries(this.map);
+          data.sort(function(a : any, b : any) {
+            return b[1] - a[1];
+          });
           for (let index = 0; index < data.length; index++) {
             this.key.push(data[index][0]);
             this.value.push(data[index][1]);
